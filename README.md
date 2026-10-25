@@ -40,6 +40,7 @@
 - 存储与文件：DataStore Preferences / SAF (DocumentFile)
 
 ## 项目结构
+
 app/src/main/java/com/example/lddc/
 ├── LDDCApplication.kt          # 应用入口
 ├── MainActivity.kt              # 主Activity（包含圆屏底栏适配）
@@ -106,3 +107,50 @@ app/src/main/java/com/example/lddc/
 │       └── settings/            # 设置页面
 │           ├── SettingsScreen.kt        # 设置（新增下载目录选择）
 │           └── SettingsViewModel.kt     # 设置VM
+
+## 安装说明
+
+1. 克隆项目
+   git clone https://github.com/adaozi/LDDC-Android.git
+
+2. 在 Android Studio 中打开项目
+
+3. 同步依赖并构建项目
+
+4. 运行应用
+
+## 许可证
+
+本项目采用 MIT 许可证
+
+## 更新日志
+
+### v1.0.3 (2026-10-25)
+- ✨ 添加一键下载歌词文件功能（支持 LRC、SRT、ASS 等格式）。
+- ✨ 新增“自定义下载目录”功能，利用 SAF 选择任意文件夹，无需存储权限。
+- ✨ 设置页新增“自动保存”开关，进入详情页加载歌词后自动静默保存。
+- ✨ 复制歌词成功后增加 Toast 提示（适配 Android 13 以下系统）。
+- ⌚ 添加圆屏设备（手表）UI 适配：优化底部导航栏，搜索页标题居中。
+- 🎨 优化详情页操作区，加入“下载”与“复制”按钮。
+- 🔧 更新底层依赖与组件结构。
+
+### v1.0.2 (2026-03-12)
+- ✨ 添加翻译和罗马歌词的适配
+- ✨ 添加设置页面
+- ✨ 添加多种歌词形式
+- 🎨 重置UI设计
+- 🔧 修复编译错误
+- 📦 清理项目结构，移除不必要文件
+
+### v1.01 (2025-02-25)
+- ✨ 新增单曲修改功能
+- ✨ 新增一键匹配功能
+- ✨ 新增加载更多选项
+- 🎨 优化UI界面设计
+- 📱 添加横屏适配
+- 🔧 修复多个已知Bug
+
+### v1.0.0
+- 🎨 初始版本发布
+- 📱 基本UI界面
+- 🔍 基本搜索功能
