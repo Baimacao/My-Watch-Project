@@ -40,3 +40,69 @@
 - 存储与文件：DataStore Preferences / SAF (DocumentFile)
 
 ## 项目结构
+app/src/main/java/com/example/lddc/
+├── LDDCApplication.kt          # 应用入口
+├── MainActivity.kt              # 主Activity（包含圆屏底栏适配）
+├── common/                      # 通用模块
+│   ├── models/                  # 数据模型
+│   │   ├── enums/               # 枚举类
+│   │   │   ├── Language.kt      # 语言
+│   │   │   ├── LyricsFormat.kt  # 歌词格式
+│   │   │   ├── LyricsType.kt    # 歌词类型
+│   │   │   ├── SearchType.kt    # 搜索类型
+│   │   │   └── Source.kt        # 音乐平台
+│   │   ├── info/                # 信息模型
+│   │   │   ├── AlbumInfo.kt     # 专辑信息
+│   │   │   ├── Artist.kt        # 艺术家信息
+│   │   │   ├── LyricInfo.kt     # 歌词信息
+│   │   │   ├── PlaylistInfo.kt  # 播放列表信息
+│   │   │   └── SongInfo.kt      # 歌曲信息
+│   │   └── lyrics/              # 歌词模型
+│   │       ├── Lyrics.kt        # 歌词数据
+│   │       ├── LyricsLine.kt    # 歌词行
+│   │       └── LyricsWord.kt    # 歌词字
+│   └── utils/                   # 工具类
+│       ├── AlbumArtLoader.kt    # 专辑封面加载
+│       ├── PermissionUtils.kt   # 权限工具
+│       └── TextUtils.kt         # 文本工具
+├── core/                        # 核心功能
+│   ├── api/                     # API实现
+│   │   ├── base/                # 基础API
+│   │   ├── impl/                # 具体实现
+│   │   │   ├── KugouApi.kt      # 酷狗音乐API
+│   │   │   ├── NetEaseApi.kt    # 网易云音乐API
+│   │   │   └── QQMusicApi.kt    # QQ音乐API
+│   │   ├── LyricsApiManager.kt  # API管理器
+│   │   └── NetEaseDeviceIds.kt  # 网易云设备ID
+│   ├── decryptor/               # 解密器
+│   │   ├── EapiDecryptor.kt     # EAPI解密
+│   │   ├── KrcDecryptor.kt      # KRC解密
+│   │   └── QrcDecryptor.kt      # QRC解密
+│   ├── parser/                  # 解析器
+│   │   └── ...
+│   └── utils/                   # 核心工具类（新增）
+│       ├── DownloadLocation.kt  # SAF 目录权限与路径管理
+│       └── LyricsSaver.kt       # 歌词文件保存引擎（支持默认/SAF）
+├── data/                        # 数据层
+│   ├── local/                   # 本地数据
+│   │   ├── database/            # 数据库
+│   │   └── datastore/           # 数据存储
+│   │       └── SettingsDataStore.kt # 设置数据存储（已适配自定义下载路径）
+│   └── repository/              # 仓库
+│       └── ...
+├── di/                          # 依赖注入
+│   └── AppModule.kt             # 应用模块
+├── domain/                      # 领域层
+│   └── ...
+├── presentation/                # 表现层
+│   ├── components/              # 组件
+│   │   └── designsystem/        # 设计系统
+│   └── screens/                 # 页面
+│       ├── search/              # 搜索页面
+│       │   ├── LyricsDetailScreen.kt    # 歌词详情（支持下载与复制提示）
+│       │   ├── LyricsDetailViewModel.kt # 歌词详情VM（支持自动保存）
+│       │   ├── SearchScreen.kt          # 搜索页面（支持圆屏标题居中）
+│       │   └── SearchViewModel.kt       # 搜索VM
+│       └── settings/            # 设置页面
+│           ├── SettingsScreen.kt        # 设置（新增下载目录选择）
+│           └── SettingsViewModel.kt     # 设置VM
