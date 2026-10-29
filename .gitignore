@@ -107,3 +107,6 @@ logs
 keystore.properties
 *.jks
 *.keystore
+
+# 本地发布产物
+/dist/
