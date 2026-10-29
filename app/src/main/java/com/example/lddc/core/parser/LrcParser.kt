@@ -8,7 +8,8 @@ class LrcParser : LyricsParser {
 
     // 修复：使用正确的正则表达式，不需要双反斜杠
     private val tagPattern = Regex("""^\[(\w+):([^\]]*)\]$""")
-    private val linePattern = Regex("""^(\[\d+:[\d.]+\])+(.+)$""")
+    // 整段前缀只算一个捕获组，否则重复时间戳标签会只剩最后一个
+    private val linePattern = Regex("""^((?:\[\d+:[\d.]+\])+)(.+)$""")
     private val timePattern = Regex("""\[(\d+):([\d.]+)\]""")
 
     override fun supports(format: String): Boolean {
@@ -41,13 +42,14 @@ class LrcParser : LyricsParser {
                     (minutes * 60 + seconds) * 1000
                 }.toList()
 
-                if (times.isNotEmpty()) {
+                // 一行可能有多个时间戳（[00:01.00][00:03.00]歌词），每个都要展开成独立歌词行
+                times.forEach { time ->
                     lines.add(
                         LyricsLine(
-                            start = times.first().toInt(),
+                            start = time.toInt(),
                             words = listOf(
                                 LyricsWord(
-                                    start = times.first().toInt(),
+                                    start = time.toInt(),
                                     text = text
                                 )
                             )

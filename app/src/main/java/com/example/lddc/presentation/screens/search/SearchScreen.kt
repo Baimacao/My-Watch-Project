@@ -516,4 +516,158 @@ private fun SearchHistoryChip(
         )
         Text(
             text = keyword,
-            fontSize =
+            fontSize = 13.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+@Composable
+private fun SearchResultItem(
+    song: SongInfo,
+    onClick: () -> Unit
+) {
+    LDDCCard(
+        onClick = onClick,
+        elevated = true
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // 专辑封面
+            Box(
+                modifier = Modifier
+                    .size(56.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
+                contentAlignment = Alignment.Center
+            ) {
+                if (!song.imageUrl.isNullOrEmpty()) {
+                    AsyncImage(
+                        model = song.imageUrl,
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            // 歌曲信息
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = song.title ?: "未知歌曲",
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Medium,
+                    maxLines = 1
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = song.artist?.toString() ?: "未知歌手",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1
+                )
+            }
+
+            // 来源标签
+            song.source?.let { source ->
+                LDDCSourceChip(
+                    text = getSourceShortName(source),
+                    sourceColor = getSourceColor(source)
+                )
+            }
+        }
+    }
+}
+
+/**
+ * 网格布局的搜索结果项（用于横屏）
+ */
+@Composable
+private fun SearchResultGridItem(
+    song: SongInfo,
+    onClick: () -> Unit
+) {
+    LDDCCard(
+        onClick = onClick,
+        elevated = true
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // 专辑封面
+            Box(
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
+                contentAlignment = Alignment.Center
+            ) {
+                if (!song.imageUrl.isNullOrEmpty()) {
+                    AsyncImage(
+                        model = song.imageUrl,
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            // 歌曲信息
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = song.title ?: "未知歌曲",
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                    maxLines = 1,
+                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = song.artist?.toString() ?: "未知歌手",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                )
+            }
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            // 来源标签
+            song.source?.let { source ->
+                LDDCSourceChip(
+                    text = getSourceShortName(source),
+                    sourceColor = getSourceColor(source)
+                )
+            }
+        }
+    }
+}
+
+private fun getSourceShortName(source: Source): String {
+    return when (source) {
+        Source.QM -> "QQ"
+        Source.NE -> "网易"
+        Source.KG -> "酷狗"
+        Source.MULTI -> "全部"
+        else -> source.name
+    }
+}
+
+@Composable
+private fun getSourceColor(source: Source): androidx.compose.ui.graphics.Color {
+    return when (source) {
+        Source.QM -> QQMusicColor
+        Source.NE -> NetEaseColor
+        Source.KG -> KugouColor
+        Source.MULTI -> MaterialTheme.colorScheme.primary
+        else -> MaterialTheme.colorScheme.primary
+    }
+}

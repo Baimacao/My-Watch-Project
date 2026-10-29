@@ -21,10 +21,10 @@
 
 | 项目            | 值                      |
 |---------------|------------------------|
-| 版本号           | 1.0.3 (versionCode: 4) |
+| 版本号           | 1.0.4 (versionCode: 4) |
 | 最低 Android 版本 | Android 7.0 (API 24)   |
 | 目标 Android 版本 | Android 15 (API 36)    |
-| 发布日期          | 2026-10-25             |
+| 发布日期          | 2026-10-29             |
 
 ## 技术栈
 
@@ -110,20 +110,67 @@ app/src/main/java/com/example/lddc/
 
 ## 安装说明
 
-1. 克隆项目
-   git clone https://github.com/adaozi/LDDC-Android.git
+### 直接安装
 
-2. 在 Android Studio 中打开项目
+从 [Releases](https://github.com/qelvor/My-Watch-Project/releases) 下载最新的 `LDDC-<版本>.apk` 安装即可。
 
-3. 同步依赖并构建项目
+- 最低要求：Android 7.0 (API 24)
+- 首次安装需允许「安装未知来源应用」
 
-4. 运行应用
+### 从源码构建
+
+```bash
+# 1. 克隆项目
+git clone https://github.com/qelvor/My-Watch-Project.git
+cd My-Watch-Project
+
+# 2. 准备 Android SDK（或用 Android Studio 自带的）
+export ANDROID_HOME=/path/to/android-sdk
+
+# 3. 构建 Debug 包
+./gradlew :app:assembleDebug
+
+# 4. 构建 Release 包（需签名配置，见下）
+./gradlew :app:assembleRelease
+```
+
+产物位置：`app/build/outputs/apk/debug/app-debug.apk`、`app/build/outputs/apk/release/app-release.apk`。
+
+### Release 签名
+
+签名信息从仓库根目录的 `keystore.properties` 读取（该文件不入库）：
+
+```properties
+storeFile=keystore/lddc-release.jks
+storePassword=你的密码
+keyAlias=lddc
+keyPassword=你的密码
+```
+
+缺少该文件时 release 构建仍可进行，但只会产出未签名的 `app-release-unsigned.apk`，无法直接安装。
+
+## 测试
+
+```bash
+./gradlew :app:testDebugUnitTest
+```
+
+单元测试覆盖歌词解析（LRC 时间戳/标签/多时间戳展开）、歌词导出（逐字 LRC、逐行 LRC、增强 LRC、SRT、ASS）以及文本工具和艺术家字段解析。
 
 ## 许可证
 
-本项目采用 MIT 许可证
+本项目采用 [MIT 许可证](LICENSE)。
 
 ## 更新日志
+
+### v1.0.4 (2026-10-29)
+- 🐛 修复 `SearchScreen.kt` 被截断导致的编译失败，补齐搜索结果列表与网格项组件。
+- 🐛 修复 LRC 一行多时间戳（`[00:01.00][00:03.00]歌词`）只解析出最后一个时间戳的问题，现在会展开成多行。
+- 🧹 清理 7 个无引用的空壳组件文件。
+- 🔧 新增 Release 签名配置，release 构建可直接产出可安装 APK。
+- ✅ 补充单元测试（歌词解析、格式导出、文本工具），移除占位测试。
+- 📄 补充 MIT LICENSE 文件，README 版本信息与构建说明同步更新。
+- ⚙️ 新增 GitHub Actions CI（构建 + 单元测试 + 产物上传）。
 
 ### v1.0.3 (2026-10-25)
 - ✨ 添加一键下载歌词文件功能（支持 LRC、SRT、ASS 等格式）。

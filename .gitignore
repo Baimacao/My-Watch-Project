@@ -55,9 +55,6 @@ LDDC-PC/
 # Testing
 coverage/
 
-# CI/CD
-.github/workflows/
-
 # Documentation
 # *.md - 保留README.md
 *.rst
@@ -105,3 +102,8 @@ logs
 # LDDC specific
 /.kotlin/sessions/
 /app/release/
+
+# Release signing (kept out of version control)
+keystore.properties
+*.jks
+*.keystore

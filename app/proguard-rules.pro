@@ -145,12 +145,6 @@
 # Optimize code
 -optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
 
-# Print mapping file
--printmapping mapping.txt
-
-# Print usage
--printusage usage.txt
-
 # Don't warn about missing classes
 -dontwarn **
 
