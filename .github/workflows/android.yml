@@ -71,17 +71,26 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      # secrets 上下文不能用在 step 的 if 里，改用 env 注入后在 shell 内判断
       - name: Restore signing keystore
-        if: ${{ secrets.KEYSTORE_BASE64 != '' }}
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "::warning::未配置签名 secrets，本次将产出未签名 APK"
+            exit 0
+          fi
           mkdir -p keystore
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > keystore/lddc-release.jks
-          cat > keystore.properties <<PROPS
-          storeFile=keystore/lddc-release.jks
-          storePassword=${{ secrets.KEYSTORE_PASSWORD }}
-          keyAlias=${{ secrets.KEY_ALIAS }}
-          keyPassword=${{ secrets.KEY_PASSWORD }}
-          PROPS
+          printf '%s' "$KEYSTORE_BASE64" | base64 -d > keystore/lddc-release.jks
+          {
+            echo "storeFile=keystore/lddc-release.jks"
+            echo "storePassword=$KEYSTORE_PASSWORD"
+            echo "keyAlias=$KEY_ALIAS"
+            echo "keyPassword=$KEY_PASSWORD"
+          } > keystore.properties
 
       - name: Build release APK
         run: ./gradlew :app:assembleRelease --stacktrace
